@@ -58,7 +58,7 @@ export class ProjectController {
       res.status(500).json({msg: "Error al actualizar el proyecto"});
    }
  }
-
+ 
 
  /**DELETE - Eliminar un proyecto */
  static deleteProject = async (req: Request, res: Response) => {
