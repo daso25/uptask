@@ -81,15 +81,38 @@ export class TaskController {
         return res.status(400).json({ error: error.message });
       }
 
-      req.project.tasks = req.project.tasks.filter(task => task.toString() !== taskId);
-      await task.deleteOne()
-      await req.project.save()
-      
+      req.project.tasks = req.project.tasks.filter(
+        (task) => task.toString() !== taskId
+      );
+      await task.deleteOne();
+      await req.project.save();
 
       res.json(task);
     } catch (error) {
       res.status(500).json({ msg: "Hubo un error", error });
     }
   };
+
+  static updateStatus = async (req: Request, res: Response) => {
+    try {
+      const { taskId } = req.params;
+      const task = await Task.findById(taskId);
+
+      if (!task) {
+        const error = new Error("Tarea no encontrada");
+        return res.status(404).json({ error: error.message });
+      }
+      if (task.project.toString() !== req.project.id) {
+        const error = new Error("Tarea no encontrada en este proyecto");
+        return res.status(400).json({ error: error.message });
+      }
+
+      task.status = req.body.status;
+      await task.save();
+      res.json(task);
+      
+    } catch (error) {
+      res.status(500).json({ msg: "Hubo un error", error });
+    }
+  };
 }
- 

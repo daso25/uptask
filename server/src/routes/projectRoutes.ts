@@ -102,4 +102,13 @@ router.delete("/:projectId/tasks/:taskId",
 );
 
 
+/**PATCH - Actualizar estado */
+router.patch("/:projectId/tasks/:taskId",
+    validateProjectExists,
+    param("taskId").isMongoId().withMessage("ID de la tarea no válido"),
+    handleInputErrors,
+    TaskController.updateStatus
+);
+
+
 export default router;
